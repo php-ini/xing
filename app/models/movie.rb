@@ -6,7 +6,11 @@ class Movie < ApplicationRecord
         def get_movies(max_records = 100, age = '', genre =  '')
             result = self.select("title, genres, (FLOOR(COUNT(rating)/100) * 100) AS rating_count, ROUND(AVG(rating), 2) AS average_rate")
 
-            result = result.joins(:rating)
+            if !age.empty?
+                result = age_query(result,age)
+            else
+                result = result.joins(:rating)
+            end
 
             result = result.group("movie_id")
             .having("rating_count > ?", RATING_COUNT_THRESHOLD)
@@ -14,5 +18,10 @@ class Movie < ApplicationRecord
             .limit(max_records)
         end
 
+        def age_query(result, age)
+            result.joins("INNER JOIN ratings ON ratings.movie_id = movies.id
+                      INNER JOIN users ON ratings.user_id = users.id")
+            .where("users.age_id = ?", age)
+        end
    end
 end
