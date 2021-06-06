@@ -12,6 +12,10 @@ class Movie < ApplicationRecord
                 result = result.joins(:rating)
             end
 
+            if !genre.empty?
+                result = genre_query(result,genre)
+            end
+
             result = result.group("movie_id")
             .having("rating_count > ?", RATING_COUNT_THRESHOLD)
             .order("average_rate DESC, rating_count DESC")
@@ -23,5 +27,9 @@ class Movie < ApplicationRecord
                       INNER JOIN users ON ratings.user_id = users.id")
             .where("users.age_id = ?", age)
         end
+
+       def genre_query(result, genre)
+            result.where("movies.genres like ?", "%#{genre}%")
+       end
    end
 end
