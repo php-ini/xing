@@ -1,0 +1,52 @@
+<br>
+<form class="search-form">
+  <div class="form-group row">
+    <label class="col-1 col-form-label" for="age">Age</label>
+    <div class="col-3">
+      <select id="age" name="age" class="custom-select">
+        <option value="">All</option>
+        <% @ages.each do |age| %>
+            <option value="<%= age.id %>"
+            <% if (defined?(@ageParam)) %>
+               <% if (@ageParam.to_i == age.id) %>
+                    selected
+                <% end %>
+            <% end %>
+            ><%= age.title %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <label for="genre" class="col-1 col-form-label">Genre</label>
+    <div class="col-3">
+      <select id="genre" name="genre" class="custom-select">
+        <option value="">All</option>
+        <% @genres.each do |genre| %>
+            <option value="<%= genre %>"
+            <% if (defined?(@genreParam))
+                if (@genreParam == genre) %>
+                selected
+                <% end %>
+            <% end %>
+            ><%= genre %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div class=" col-2">
+      <button name="submit" type="button" class="btn btn-primary">Search</button>
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+    function redirectToRoute() {
+        let genre = $('#genre').val();
+        let age = $('#age').val();
+        window.location.href = "/chart/?age=" + age + "&genre=" + genre;
+    }
+
+    $('.search-form [name="submit"]').click(function(){
+        redirectToRoute();
+    });
+</script>
