@@ -4,7 +4,7 @@ class Movie < ApplicationRecord
 
     class << self
         def get_movies(max_records = 100, age = '', genre =  '')
-            result = self.select("title, genres, (FLOOR(COUNT(rating)/100) * 100) AS rating_count, ROUND(AVG(rating), 2) AS average_rate")
+            result = self.select(base_select)
 
             if !age.empty?
                 result = age_query(result,age)
@@ -20,6 +20,10 @@ class Movie < ApplicationRecord
             .having("rating_count > ?", RATING_COUNT_THRESHOLD)
             .order("average_rate DESC, rating_count DESC")
             .limit(max_records)
+        end
+
+        def base_select
+            "title, genres, COUNT(rating) AS rating_count, CASE WHEN (FLOOR(COUNT(rating)/100) * 100) < 100 THEN COUNT(rating) ELSE (FLOOR(COUNT(rating)/100) * 100) END AS rating_count_round, ROUND(AVG(rating), 2) AS average_rate"
         end
 
         def age_query(result, age)

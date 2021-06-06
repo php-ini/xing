@@ -1,32 +1,13 @@
 <div class="container">
     <div class="row">
         <div class="col col-12">
-            <h3>Movies List</h3>
+            <h3>Movies List (search)</h3>
                   <div>
                     <%= render :template => 'movie/elements/search' %>
                   </div>
                   <br>
 
-                 <table class="table table-bordered table-striped">
-                   <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Genres</th>
-                    <th>Ratings count</th>
-                    <th>Average rate</th>
-                  </tr>
-
-                  <% @movies.each do |movie| %>
-                      <tr>
-                        <td><%= @increment = @increment + 1 %></td>
-                        <td><%= movie.title %></td>
-                        <td><%= movie.genres %></td>
-                        <td><%= movie.rating_count %></td>
-                        <td><%= movie.average_rate %></td>
-
-                       </tr>
-                  <% end %>
-                </table>
+                 <%= render :template => 'movie/elements/movies_table' %>
         </div>
     </div>
 </div>

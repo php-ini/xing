@@ -1,0 +1,20 @@
+<table class="table table-bordered table-striped">
+   <tr>
+    <th>#</th>
+    <th>Title</th>
+    <th>Genres</th>
+    <th>Ratings Count</th>
+    <th>Rating</th>
+  </tr>
+
+  <% @movies.each do |movie| %>
+      <tr>
+        <td><%= @increment = @increment + 1 %></td>
+        <td><%= movie.title %></td>
+        <td><%= movie.genres %></td>
+        <td><%= movie.rating_count_round %> (<%= movie.rating_count %>)</td>
+        <td><%= movie.average_rate %></td>
+
+       </tr>
+  <% end %>
+</table>
